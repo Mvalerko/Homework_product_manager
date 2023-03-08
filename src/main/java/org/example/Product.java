@@ -11,14 +11,6 @@ public class Product {
         this.price = price;
     }
 
-    public boolean isTooExpensive() {
-        if (price > 1_000_000) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public int getId() {
         return id;
     }
@@ -43,7 +35,4 @@ public class Product {
         this.price = price;
     }
 
-    public void use() {
-        System.out.println("Продукт " + name + " используется");
-    }
 }

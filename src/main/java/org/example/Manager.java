@@ -2,14 +2,11 @@ package org.example;
 
 public class Manager {
 
-    protected ProductRepository repo = new ProductRepository();
+    ProductRepository repo = new ProductRepository();
 
-    /*public Manager (ProductRepository repo) {
-
+    public Manager(ProductRepository repo) {
 
     }
-
-     */
 
     public void add(Product managerOption) {
         repo.save(managerOption);
@@ -19,7 +16,6 @@ public class Manager {
         repo.removeById(removeOpt);
     }
 
-
     public Product[] findAll() {
         Product[] redirect = repo.getItems();
         return redirect;
@@ -28,19 +24,17 @@ public class Manager {
 
     public Product[] searchBy(String text) {
         Product[] result = new Product[0]; // тут будем хранить подошедшие запросу продукты
+
         for (Product product : findAll()) {
             if (matches(product, text)) {
-                // "добавляем в конец" массива result продукт product
                 Product[] tmp = new Product[result.length + 1];
-/*
-                for (int i = 0; i < items.length; i++) {
-                    tmp[i] = items[i];
+                for (int i = 0; i < result.length; i++) {
+                    tmp[i] = result[i];
                 }
-
- */
                 tmp[tmp.length - 1] = product;
                 result = tmp;
             }
+
         }
         return result;
     }

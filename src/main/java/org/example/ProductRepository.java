@@ -12,16 +12,32 @@ public class ProductRepository {
         items = tmp;
     }
 
-    public void removeById(int id) {
-        Product[] tmp = new Product[items.length - 1];
-        int copyToIndex = 0;
-        for (Product item : items) {
-            if (item.getId() != id) {
-                tmp[copyToIndex] = item;
-                copyToIndex++;
+    public void removeById(int idOpt) {
+
+        for (Product product : items) {
+            if (matches(product, idOpt)) {
+                Product[] tmp = new Product[items.length - 1];
+                int copyToIndex = 0;
+                for (Product item : items) {
+                    if (item.getId() != idOpt) {
+                        tmp[copyToIndex] = item;
+                        copyToIndex++;
+
+                    }
+                }
+                items = tmp;
             }
         }
-        items = tmp;
+    }
+
+    public boolean matches(Product product, int search) {
+        if (product.getId() == search) {
+            return true;
+        } else {
+            return false;
+        }
+        // или в одну строку:
+        // return product.getName().contains(search);
     }
 
     public Product[] getItems() {

@@ -15,10 +15,18 @@ public class ManagerTest {
     );
     Product onePlus = new Smartphone(
             2,
-            "Смартфон",
+            "Смартфон544645564!@ё]",
             54000,
-            "1",
+            "11",
             "OnePlus"
+
+    );
+    Product pixel = new Smartphone(
+            4,
+            "Smartphone",
+            55000,
+            "7 Pro",
+            "Google"
 
     );
     Product book1963 = new Book(
@@ -28,18 +36,23 @@ public class ManagerTest {
             "Стивен Кинг",
             "11/22/63"
     );
+    Product bookMetro = new Book(
+            7,
+            "!№{",
+            680,
+            "Дмитрий Глуховский",
+            "Метро 2034"
+    );
 
     @Test
     public void findAllDefault() {
 
         ProductRepository repo = new ProductRepository();
-        Manager mgr = new Manager();
-
+        Manager mgr = new Manager(repo);
 
         mgr.add(galaxy);
         mgr.add(onePlus);
         mgr.add(book1963);
-
 
         Product[] expected = {galaxy, onePlus, book1963};
         Product[] actual = mgr.findAll();
@@ -47,21 +60,98 @@ public class ManagerTest {
         Assertions.assertArrayEquals(expected, actual);
     }
     @Test
-    public void matchesTest() {
+    public void findAllZero() {
 
         ProductRepository repo = new ProductRepository();
-        Manager mgr = new Manager();
+        Manager mgr = new Manager(repo);
 
+
+        Product[] expected = {};
+        Product[] actual = mgr.findAll();
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void matchesСyrillicTest() {
+
+        ProductRepository repo = new ProductRepository();
+        Manager mgr = new Manager(repo);
 
         mgr.add(galaxy);
         mgr.add(onePlus);
         mgr.add(book1963);
 
-
-
         Product[] expected = {book1963};
 
         Product[] actual = mgr.searchBy("Книга");
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void matchesSymbolTest() {
+
+        ProductRepository repo = new ProductRepository();
+        Manager mgr = new Manager(repo);
+
+        mgr.add(galaxy);
+        mgr.add(onePlus);
+        mgr.add(book1963);
+        mgr.add(bookMetro);
+
+        Product[] expected = {bookMetro};
+
+        Product[] actual = mgr.searchBy("№{");
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void matchesСyrillicTestMore() {
+
+        ProductRepository repo = new ProductRepository();
+        Manager mgr = new Manager(repo);
+
+        mgr.add(galaxy);
+        mgr.add(onePlus);
+        mgr.add(book1963);
+
+        Product[] expected = {galaxy, onePlus};
+
+        Product[] actual = mgr.searchBy("Смартфон");
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void matchesСyrillicTestYo() {
+
+        ProductRepository repo = new ProductRepository();
+        Manager mgr = new Manager(repo);
+
+        mgr.add(galaxy);
+        mgr.add(onePlus);
+        mgr.add(book1963);
+
+        Product[] expected = {onePlus};
+
+        Product[] actual = mgr.searchBy("ё");
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void matchesTest() {
+
+        ProductRepository repo = new ProductRepository();
+        Manager mgr = new Manager(repo);
+
+        mgr.add(galaxy);
+        mgr.add(onePlus);
+        mgr.add(book1963);
+        mgr.add(pixel);
+
+        Product[] expected = {pixel};
+
+        Product[] actual = mgr.searchBy("Smartphone");
 
         Assertions.assertArrayEquals(expected, actual);
     }
@@ -70,14 +160,11 @@ public class ManagerTest {
     public void notMatchesTest() {
 
         ProductRepository repo = new ProductRepository();
-        Manager mgr = new Manager();
-
+        Manager mgr = new Manager(repo);
 
         mgr.add(galaxy);
         mgr.add(onePlus);
         mgr.add(book1963);
-
-
 
         Product[] expected = {};
 
@@ -90,13 +177,13 @@ public class ManagerTest {
     public void remove() {
 
         ProductRepository repo = new ProductRepository();
-        Manager mgr = new Manager();
-
+        Manager mgr = new Manager(repo);
 
         mgr.add(galaxy);
         mgr.add(onePlus);
         mgr.add(book1963);
         mgr.removeById(2);
+
 
         Product[] expected = {galaxy, book1963};
 
@@ -104,5 +191,55 @@ public class ManagerTest {
 
         Assertions.assertArrayEquals(expected, actual);
     }
+    @Test
+    public void removeInvalidIndex() {
 
+        ProductRepository repo = new ProductRepository();
+        Manager mgr = new Manager(repo);
+
+        mgr.add(galaxy);
+        mgr.add(onePlus);
+        mgr.add(book1963);
+        mgr.removeById(9);
+
+        Product[] expected = {galaxy, onePlus, book1963};
+
+        Product[] actual = mgr.findAll();
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void removeInvalidIndexZero() {
+
+        ProductRepository repo = new ProductRepository();
+        Manager mgr = new Manager(repo);
+
+        mgr.add(galaxy);
+        mgr.add(onePlus);
+        mgr.add(book1963);
+        mgr.removeById(0);
+
+        Product[] expected = {galaxy, onePlus, book1963};
+
+        Product[] actual = mgr.findAll();
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+    @Test
+    public void removeInvalidIndexNegative() {
+
+        ProductRepository repo = new ProductRepository();
+        Manager mgr = new Manager(repo);
+
+        mgr.add(galaxy);
+        mgr.add(onePlus);
+        mgr.add(book1963);
+        mgr.removeById(-5);
+
+        Product[] expected = {galaxy, onePlus, book1963};
+
+        Product[] actual = mgr.findAll();
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
 }
