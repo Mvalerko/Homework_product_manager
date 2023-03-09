@@ -106,6 +106,23 @@ public class ManagerTest {
         Assertions.assertArrayEquals(expected, actual);
     }
     @Test
+    public void matchesSpaceTest() {
+
+        ProductRepository repo = new ProductRepository();
+        Manager mgr = new Manager(repo);
+
+        mgr.add(galaxy);
+        mgr.add(onePlus);
+        mgr.add(book1963);
+        mgr.add(bookMetro);
+
+        Product[] expected = {};
+
+        Product[] actual = mgr.searchBy(" ");
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+    @Test
     public void matchesСyrillicTestMore() {
 
         ProductRepository repo = new ProductRepository();
