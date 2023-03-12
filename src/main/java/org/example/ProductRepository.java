@@ -14,20 +14,33 @@ public class ProductRepository {
 
     public void removeById(int idOpt) {
 
+        if (findById(idOpt) == null) {
+            throw new NotFoundException("При попытке удаления ячейки из массива Вы ввели несуществующий id(" +idOpt+  ") продукта." +
+                    " Операция не выполнена");
+        } else {
+
+            Product[] tmp = new Product[items.length - 1];
+            int copyToIndex = 0;
+            for (Product item : items) {
+                if (item.getId() != idOpt) {
+                    tmp[copyToIndex] = item;
+                    copyToIndex++;
+
+                }
+            }
+            items = tmp;
+        }
+    }
+
+    public Product findById(int idOpt) {
+
         for (Product product : items) {
             if (matches(product, idOpt)) {
-                Product[] tmp = new Product[items.length - 1];
-                int copyToIndex = 0;
-                for (Product item : items) {
-                    if (item.getId() != idOpt) {
-                        tmp[copyToIndex] = item;
-                        copyToIndex++;
+                return product;
 
-                    }
-                }
-                items = tmp;
             }
         }
+        return null;
     }
 
     public boolean matches(Product product, int search) {
