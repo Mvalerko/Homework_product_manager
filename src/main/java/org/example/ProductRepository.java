@@ -4,19 +4,25 @@ public class ProductRepository {
     private Product[] items = new Product[0];
 
     public void save(Product item) {
-        Product[] tmp = new Product[items.length + 1];
-        for (int i = 0; i < items.length; i++) {
-            tmp[i] = items[i];
+
+        if (findById(item.id) != null) {
+            throw new AlreadyExistsException("При попытке добавить продукт в массив вы указали продукт с уже существующим в массиве id(" + item.id + ")" +
+                    " Операция не выполнена. В массиве остался только один продукт с id(" + item.id + ")");
+        } else {
+            Product[] tmp = new Product[items.length + 1];
+            for (int i = 0; i < items.length; i++) {
+                tmp[i] = items[i];
+            }
+            tmp[tmp.length - 1] = item;
+            items = tmp;
         }
-        tmp[tmp.length - 1] = item;
-        items = tmp;
     }
 
     public void removeById(int idOpt) {
 
         if (findById(idOpt) == null) {
             throw new NotFoundException("При попытке удаления ячейки из массива Вы ввели несуществующий id(" +idOpt+  ") продукта." +
-                    " Операция не выполнена");
+                    " Операция не выполнена.");
         } else {
 
             Product[] tmp = new Product[items.length - 1];
@@ -37,7 +43,6 @@ public class ProductRepository {
         for (Product product : items) {
             if (matches(product, idOpt)) {
                 return product;
-
             }
         }
         return null;

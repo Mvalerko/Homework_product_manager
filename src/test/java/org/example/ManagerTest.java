@@ -60,6 +60,19 @@ public class ManagerTest {
         Assertions.assertArrayEquals(expected, actual);
     }
     @Test
+    public void findAllPlusRepeat() {
+
+        ProductRepository repo = new ProductRepository();
+        Manager mgr = new Manager(repo);
+
+        mgr.add(galaxy);
+        mgr.add(onePlus);
+        mgr.add(book1963);
+
+        Assertions.assertThrows(AlreadyExistsException.class, () -> {mgr.add(galaxy);
+        });
+    }
+    @Test
     public void findAllZero() {
 
         ProductRepository repo = new ProductRepository();
