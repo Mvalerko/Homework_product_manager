@@ -217,13 +217,11 @@ public class ManagerTest {
         mgr.add(galaxy);
         mgr.add(onePlus);
         mgr.add(book1963);
-        mgr.removeById(9);
 
-        Product[] expected = {galaxy, onePlus, book1963};
 
-        Product[] actual = mgr.findAll();
-
-        Assertions.assertArrayEquals(expected, actual);
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            mgr.removeById(-9);
+        });
     }
     @Test
     public void removeInvalidIndexZero() {
@@ -234,13 +232,11 @@ public class ManagerTest {
         mgr.add(galaxy);
         mgr.add(onePlus);
         mgr.add(book1963);
-        mgr.removeById(0);
 
-        Product[] expected = {galaxy, onePlus, book1963};
 
-        Product[] actual = mgr.findAll();
-
-        Assertions.assertArrayEquals(expected, actual);
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            mgr.removeById(0);
+        });
     }
     @Test
     public void removeInvalidIndexNegative() {
@@ -251,12 +247,9 @@ public class ManagerTest {
         mgr.add(galaxy);
         mgr.add(onePlus);
         mgr.add(book1963);
-        mgr.removeById(-5);
 
-        Product[] expected = {galaxy, onePlus, book1963};
-
-        Product[] actual = mgr.findAll();
-
-        Assertions.assertArrayEquals(expected, actual);
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            mgr.removeById(-5);
+        });
     }
 }
